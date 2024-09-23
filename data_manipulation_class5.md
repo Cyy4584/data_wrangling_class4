@@ -36,3 +36,169 @@ litter_df = read_csv("./data_import_examples/FAS_litters.csv")
 ``` r
 litter_df = janitor::clean_names(litter_df)
 ```
+
+# ‘Select’ some columns but not others
+
+different usages of ‘select’ function: - select columns by name
+
+``` r
+select(litter_df, group, litter_number)
+```
+
+    ## # A tibble: 49 × 2
+    ##    group litter_number  
+    ##    <chr> <chr>          
+    ##  1 Con7  #85            
+    ##  2 Con7  #1/2/95/2      
+    ##  3 Con7  #5/5/3/83/3-3  
+    ##  4 Con7  #5/4/2/95/2    
+    ##  5 Con7  #4/2/95/3-3    
+    ##  6 Con7  #2/2/95/3-2    
+    ##  7 Con7  #1/5/3/83/3-3/2
+    ##  8 Con8  #3/83/3-3      
+    ##  9 Con8  #2/95/3        
+    ## 10 Con8  #3/5/2/2/95    
+    ## # ℹ 39 more rows
+
+``` r
+select(litter_df, -group)
+```
+
+    ## # A tibble: 49 × 7
+    ##    litter_number   gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr>           <chr>      <chr>             <dbl>           <dbl>
+    ##  1 #85             19.7       34.7                 20               3
+    ##  2 #1/2/95/2       27         42                   19               8
+    ##  3 #5/5/3/83/3-3   26         41.4                 19               6
+    ##  4 #5/4/2/95/2     28.5       44.1                 19               5
+    ##  5 #4/2/95/3-3     <NA>       <NA>                 20               6
+    ##  6 #2/2/95/3-2     <NA>       <NA>                 20               6
+    ##  7 #1/5/3/83/3-3/2 <NA>       <NA>                 20               9
+    ##  8 #3/83/3-3       <NA>       <NA>                 20               9
+    ##  9 #2/95/3         <NA>       <NA>                 20               8
+    ## 10 #3/5/2/2/95     28.5       <NA>                 20               8
+    ## # ℹ 39 more rows
+    ## # ℹ 2 more variables: pups_dead_birth <dbl>, pups_survive <dbl>
+
+``` r
+select(litter_df, group:gd18_weight)
+```
+
+    ## # A tibble: 49 × 4
+    ##    group litter_number   gd0_weight gd18_weight
+    ##    <chr> <chr>           <chr>      <chr>      
+    ##  1 Con7  #85             19.7       34.7       
+    ##  2 Con7  #1/2/95/2       27         42         
+    ##  3 Con7  #5/5/3/83/3-3   26         41.4       
+    ##  4 Con7  #5/4/2/95/2     28.5       44.1       
+    ##  5 Con7  #4/2/95/3-3     <NA>       <NA>       
+    ##  6 Con7  #2/2/95/3-2     <NA>       <NA>       
+    ##  7 Con7  #1/5/3/83/3-3/2 <NA>       <NA>       
+    ##  8 Con8  #3/83/3-3       <NA>       <NA>       
+    ##  9 Con8  #2/95/3         <NA>       <NA>       
+    ## 10 Con8  #3/5/2/2/95     28.5       <NA>       
+    ## # ℹ 39 more rows
+
+- Rename columns: one change and select, the other one change but keep
+  others.
+
+``` r
+select(litter_df, GROUP = group, LITTER_NUMBER = litter_number)
+```
+
+    ## # A tibble: 49 × 2
+    ##    GROUP LITTER_NUMBER  
+    ##    <chr> <chr>          
+    ##  1 Con7  #85            
+    ##  2 Con7  #1/2/95/2      
+    ##  3 Con7  #5/5/3/83/3-3  
+    ##  4 Con7  #5/4/2/95/2    
+    ##  5 Con7  #4/2/95/3-3    
+    ##  6 Con7  #2/2/95/3-2    
+    ##  7 Con7  #1/5/3/83/3-3/2
+    ##  8 Con8  #3/83/3-3      
+    ##  9 Con8  #2/95/3        
+    ## 10 Con8  #3/5/2/2/95    
+    ## # ℹ 39 more rows
+
+``` r
+rename(litter_df, GROUP = group, LITTER_NUMBER = litter_number)
+```
+
+    ## # A tibble: 49 × 8
+    ##    GROUP LITTER_NUMBER   gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr> <chr>           <chr>      <chr>             <dbl>           <dbl>
+    ##  1 Con7  #85             19.7       34.7                 20               3
+    ##  2 Con7  #1/2/95/2       27         42                   19               8
+    ##  3 Con7  #5/5/3/83/3-3   26         41.4                 19               6
+    ##  4 Con7  #5/4/2/95/2     28.5       44.1                 19               5
+    ##  5 Con7  #4/2/95/3-3     <NA>       <NA>                 20               6
+    ##  6 Con7  #2/2/95/3-2     <NA>       <NA>                 20               6
+    ##  7 Con7  #1/5/3/83/3-3/2 <NA>       <NA>                 20               9
+    ##  8 Con8  #3/83/3-3       <NA>       <NA>                 20               9
+    ##  9 Con8  #2/95/3         <NA>       <NA>                 20               8
+    ## 10 Con8  #3/5/2/2/95     28.5       <NA>                 20               8
+    ## # ℹ 39 more rows
+    ## # ℹ 2 more variables: pups_dead_birth <dbl>, pups_survive <dbl>
+
+- select columns by condition / select helpers the last two examples
+  repersent the same function but the different expressions.
+
+``` r
+select(litter_df, starts_with("gd"))
+```
+
+    ## # A tibble: 49 × 3
+    ##    gd0_weight gd18_weight gd_of_birth
+    ##    <chr>      <chr>             <dbl>
+    ##  1 19.7       34.7                 20
+    ##  2 27         42                   19
+    ##  3 26         41.4                 19
+    ##  4 28.5       44.1                 19
+    ##  5 <NA>       <NA>                 20
+    ##  6 <NA>       <NA>                 20
+    ##  7 <NA>       <NA>                 20
+    ##  8 <NA>       <NA>                 20
+    ##  9 <NA>       <NA>                 20
+    ## 10 28.5       <NA>                 20
+    ## # ℹ 39 more rows
+
+``` r
+select(litter_df, litter_number, everything())
+```
+
+    ## # A tibble: 49 × 8
+    ##    litter_number   group gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr>           <chr> <chr>      <chr>             <dbl>           <dbl>
+    ##  1 #85             Con7  19.7       34.7                 20               3
+    ##  2 #1/2/95/2       Con7  27         42                   19               8
+    ##  3 #5/5/3/83/3-3   Con7  26         41.4                 19               6
+    ##  4 #5/4/2/95/2     Con7  28.5       44.1                 19               5
+    ##  5 #4/2/95/3-3     Con7  <NA>       <NA>                 20               6
+    ##  6 #2/2/95/3-2     Con7  <NA>       <NA>                 20               6
+    ##  7 #1/5/3/83/3-3/2 Con7  <NA>       <NA>                 20               9
+    ##  8 #3/83/3-3       Con8  <NA>       <NA>                 20               9
+    ##  9 #2/95/3         Con8  <NA>       <NA>                 20               8
+    ## 10 #3/5/2/2/95     Con8  28.5       <NA>                 20               8
+    ## # ℹ 39 more rows
+    ## # ℹ 2 more variables: pups_dead_birth <dbl>, pups_survive <dbl>
+
+``` r
+relocate(litter_df, litter_number)
+```
+
+    ## # A tibble: 49 × 8
+    ##    litter_number   group gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr>           <chr> <chr>      <chr>             <dbl>           <dbl>
+    ##  1 #85             Con7  19.7       34.7                 20               3
+    ##  2 #1/2/95/2       Con7  27         42                   19               8
+    ##  3 #5/5/3/83/3-3   Con7  26         41.4                 19               6
+    ##  4 #5/4/2/95/2     Con7  28.5       44.1                 19               5
+    ##  5 #4/2/95/3-3     Con7  <NA>       <NA>                 20               6
+    ##  6 #2/2/95/3-2     Con7  <NA>       <NA>                 20               6
+    ##  7 #1/5/3/83/3-3/2 Con7  <NA>       <NA>                 20               9
+    ##  8 #3/83/3-3       Con8  <NA>       <NA>                 20               9
+    ##  9 #2/95/3         Con8  <NA>       <NA>                 20               8
+    ## 10 #3/5/2/2/95     Con8  28.5       <NA>                 20               8
+    ## # ℹ 39 more rows
+    ## # ℹ 2 more variables: pups_dead_birth <dbl>, pups_survive <dbl>

@@ -64,11 +64,10 @@ arrange(litter_df, pups_born_alive)
 arrange(litter_df, pups_born_alive, gd0_weight)
 ```
 
-
-
-
-
-
-
-
-
+## pipe %>% 
+pipe is used to connect the functions together.
+one more fuction:
+```{r}
+litter_df_without_missing = drop_na(litter_df, gd0_weight)
+```
+A %>% B %>% select(only code the things after ','), mutate works the same way.

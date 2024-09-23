@@ -36,6 +36,21 @@ select(litter_df, litter_number, everything())
 relocate(litter_df, litter_number)
 ```
 
+# 'Filter' function
+select is on columns, filter is on rows.
+when we want to see whether a condition is valid, we use "==", instead of "=", which is used to assign values.
+the last one repreesents choosing the subjects that meet either of the two conditions but not both.
+```{r}
+filter(litter_df, gd_of_birth == 20)
+filter(litter_df, gd_of_birth != 20)
+filter(litter_df, !(gd_of_birth == 20))
+filter(litter_df, gd_of_birth <= 20)
+filter(litter_df, gd_of_birth == 20, gd0_weight > 22)
+filter(litter_df, group == "Mod8")
+filter(litter_df, group %in% c("Mod8", "Con7"))
+```
+
+
 
 
 

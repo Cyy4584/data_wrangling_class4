@@ -1,0 +1,12 @@
+---
+title: "data_manipulation_class5"
+author: "Yingyu Cui"
+date: "2024-09-23"
+output: github_document
+---
+```{r set up}
+library(tidyverse)
+```
+
+
+

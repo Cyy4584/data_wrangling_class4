@@ -1,0 +1,31 @@
+---
+title: "Simple document"
+output: github_document
+---
+
+```{r setup, echo = FALSE, message = FALSE}
+library(tidyverse)
+```
+
+This will show how to import data.
+
+litter_df = read_csv("data_import_examples/FAS_litters.csv")
+litters_df = read_csv(file = "./data_import_examples/FAS_litters.csv")
+
+names(litters_df)
+litters_df = janitor::clean_names(litters_df)
+names(litters_df)
+
+litters_df
+tail(litters_df, 5)
+
+skimr::skim(litters_df)
+
+litters_df = 
+    read_csv(file = "data_import_examples/FAS_litters.csv",
+    skip = 10, col_names = FALSE)
+    
+
+## do not ever use read.csv _ and . are diff not a frame but a table
+## never do this : litter_df$L
+most of time the $ sign is wrong 

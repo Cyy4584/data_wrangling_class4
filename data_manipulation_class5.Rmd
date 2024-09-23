@@ -56,6 +56,13 @@ Question: why the diff(diff_weight = 18_weight-0_weight) cannot calculate but Pr
 mutate(litter_df,  
        group = str_to_lower(group))
 ```
+## 'Arrange'
+which is put the data in order.(Used not that often)
+first A and then B
+```{r}
+arrange(litter_df, pups_born_alive)
+arrange(litter_df, pups_born_alive, gd0_weight)
+```
 
 
 

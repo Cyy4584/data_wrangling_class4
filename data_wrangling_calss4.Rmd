@@ -4,8 +4,12 @@ author: "Yingyu Cui"
 date: "2024-09-22"
 output: github_document
 ---
+
+# We normally put all the libraries we need in the first chunk.
 ```{r set up}
 library(tidyverse)
+library(readxl)
+library(haven)
 ```
 
 # Read in some data 
@@ -13,3 +17,67 @@ find my current working directory
 ```{r find my current working directory}
 getwd()
 ```
+read in data
+```{r read in data}
+litter_df = read.csv("./data_import_examples/FAS_litters.csv")
+litter_df = janitor::clean_names(litter_df)
+```
+
+#take a look at the new data 
+```{r take a look at the new data}
+head(litter_df)
+```
+here is another way to look at the data, sometimes there are always something wrong with the last few rows.
+```{r another look}
+tail(litter_df)
+```
+here are another fonction to look at the data
+```{r another another look} 
+skimr::skim(litter_df)
+```
+
+the view() function is also a good way to look at the data, but we normally do not open that in the markdown file. This is because it will open a new window in the Rstudio, and will cause some trouble when we knit the file. 
+
+# options in the function read_csv. The funtions could be found in "?read_csv", here they are. ATTENTION: never use read.csv, it is not a good function to read in data. 
+read_csv(
+  file,
+  col_names = TRUE,
+  col_types = NULL,
+  col_select = NULL,
+  id = NULL,
+  locale = default_locale(),
+  na = c("", "NA"),
+  quoted_na = TRUE,
+  quote = "\"",
+  comment = "",
+  trim_ws = TRUE,
+  skip = 0,
+  n_max = Inf,
+  guess_max = min(1000, n_max),
+  name_repair = "unique",
+  num_threads = readr_threads(),
+  progress = show_progress(),
+  show_col_types = should_show_types(),
+  skip_empty_rows = TRUE,
+  lazy = should_read_lazy()
+)
+col_types = () name the types of data by hand instead of letting R guess it.
+na = () recognize some missing data and transform it into "NA"
+
+```{r options in the function read_csv}
+litter_df = read_csv("./data_import_examples/FAS_litters.csv", skip = 10, col_names = FALSE)
+litter_df = read_csv("./data_import_examples/FAS_litters.csv", na = c("NA", "N/A", "999", "."))
+```
+
+# Read other formats, pay attantion to the function of "sheet" and "range"
+```{r read other formats}
+mlb_df = read_excel("./data_import_examples/mlb11.xlsx", range = "A1:F7")
+```
+# Read a SAS format file
+```{r read a SAS format file}
+pulse_df = read_sas("./data_import_examples/pulse.sas7bdat")
+pulse_df
+``` 
+
+
+

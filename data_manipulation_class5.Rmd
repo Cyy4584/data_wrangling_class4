@@ -49,6 +49,15 @@ filter(litter_df, gd_of_birth == 20, gd0_weight > 22)
 filter(litter_df, group == "Mod8")
 filter(litter_df, group %in% c("Mod8", "Con7"))
 ```
+## 'Mutate'
+mutate is used to create new columns or change the context in different columns.
+Question: why the diff(diff_weight = 18_weight-0_weight) cannot calculate but Prof.Jeff could?
+```{r}
+mutate(litter_df,  
+       group = str_to_lower(group))
+```
+
+
 
 
 

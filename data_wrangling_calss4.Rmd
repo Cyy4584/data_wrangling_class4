@@ -1,0 +1,15 @@
+---
+title: "data_wrangling_class4"
+author: "Yingyu Cui"
+date: "2024-09-22"
+output: github_document
+---
+```{r set up}
+library(tidyverse)
+```
+
+# Read in some data 
+find my current working directory
+```{r find my current working directory}
+getwd()
+```

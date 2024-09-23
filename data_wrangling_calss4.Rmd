@@ -78,6 +78,11 @@ mlb_df = read_excel("./data_import_examples/mlb11.xlsx", range = "A1:F7")
 pulse_df = read_sas("./data_import_examples/pulse.sas7bdat")
 pulse_df
 ``` 
+# Use read_csv, rather than use read.csv !!! imp.!!
 
+# Export data 
+```{r export data}
+write_csv(mlb_df, "./data_import_examples/mlb11_subtable.csv")
+```
 
 

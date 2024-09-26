@@ -1,0 +1,8 @@
+---
+title: "class6 afterclass note"
+author: "Yingyu Cui"
+date: "2024-09-26"
+output: github_document
+---
+
+

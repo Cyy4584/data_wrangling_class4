@@ -1,0 +1,39 @@
+---
+title: "class6 onclass"
+author: "Yingyu Cui"
+date: "2024-09-24"
+output: github_document
+---
+
+##tidy
+neuroimageing Genomics
+tidy or not tidy --- redable or not redable
+
+relational data pairing ?
+joints of chart A and B
+
+?
+
+pulse_df <- read_sas("C:/Users/g/Documents/data science/draft_onafter_class/data_wrangling_class4 and 5/data_import_examples/public_pulse_data.sas7bdat")
+
+mutate (visit = replace(visit, visit == 1, "baseline"))?
+case_match
+case_when 
+replace()
+pivet_wider(name_from, value_from)
+knitr:: kable() look again 
+
+## bind more than one tables
+
+fellowship_ring = read_excel("C:/Users/g/Documents/data science/draft_onafter_class/data_wrangling_class4 and 5/data_import_examples/LotR_Words.xlsx, range = "J3:L6")
+
+bind_rows()
+
+names_to = "sex"
+values_to = "words"
+seperate (group, into = c("fellowship", "ring"), sep = "_")
+mutate( sex = case_match(sex, 1~  2~))
+
+left_join(A, B, by = "litter_number")
+mutating join usage
+

@@ -4,5 +4,145 @@ author: "Yingyu Cui"
 date: "2024-09-26"
 output: github_document
 ---
+```{r set up}
+library(tidyverse)
+library(haven)
+```
+load the sas file and clean names
+```{r}
+pulse_df = read_sas("./data_import_examples/public_pulse_data.sas7bdat") |> 
+  janitor::clean_names()
+```
+
+
+```{r}
+pulse_df1 = read_sas("./data_import_examples/public_pulse_data.sas7bdat") |> 
+  janitor::clean_names()
+```
+
+
+thin the data frame
+```{r}
+pulse_df = pivot_longer(pulse_df1, 
+                        bdi_score_bl:bdi_score_12m,
+                        names_to = "visit",
+                        names_prefix = "bdi_score_",
+                        values_to = "bdi")
+pulse_df
+```
+replace items in the visit column
+```{r}
+pulse_df1 = read_sas("./data_import_examples/public_pulse_data.sas7bdat") |> 
+  janitor::clean_names() |>
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit",
+    names_prefix = "bdi_score_",
+    values_to = "bdi") |>
+  mutate(visit = replace(visit, visit == "bl", "00m"),
+         visit = factor(visit))
+pulse_df1
+
+```
+assessment 1:
+```{r}
+litter_df1 = read_csv("./data_import_examples/FAS_litters.csv") |> 
+  janitor::clean_names() |> 
+  select(litter_number, ends_with("weight")) |> 
+  pivot_longer(gd0_weight:gd18_weight,
+               names_to = "gd",
+               values_to = "weight"
+               ) |> 
+  mutate(gd = 
+           case_match(gd,
+                      "gd0_weight"  ~ 0,
+                      "gd18_weight" ~ 18
+                      )
+         )
+litter_df1
+
+  
+```
+
+# Pivot_wider
+```{r}
+analysis_result = 
+  tibble(
+    group = c("treatment", "treatment", "placebo", "placebo"),
+    time = c("pre", "post", "pre", "post"),
+    mean = c(4, 8, 3.5, 4)
+  )
+analysis_result
+```
+now we transform this data frame
+```{r}
+analysis_result |> 
+  pivot_wider(names_from = "time",
+              values_from = "mean")
+```
+a nicer table for reading
+```{r}
+knitr::kable(analysis_result)
+```
+
+# Binding rows
+import three charts
+```{r}
+lotr_df1 = readxl::read_excel("./data_import_examples/LotR_Words.xlsx", range = "B3:D6") |> 
+  mutate(movie = "fellowship_ring")
+lotr_df2 = readxl::read_excel("./data_import_examples/LotR_Words.xlsx", range = "F3:H6") |>
+  mutate(movie = "two_towers")
+lotr_df3 = readxl::read_excel("./data_import_examples/LotR_Words.xlsx", range = "J3:L6") |>
+  mutate(movie = "return_king")
+```
+
+bind the rows
+```{r}
+lotr_tidy = 
+  bind_rows(lotr_df1, lotr_df2, lotr_df3) |> 
+  janitor::clean_names() |> 
+  pivot_longer(
+    female:male,
+    names_to = "gender", 
+    values_to = "words") |> 
+  mutate(race = str_to_lower(race)) |> 
+  select(movie, everything())
+lotr_tidy
+```
+
+# Join datasets
+```{r load data}
+pup_df = 
+  read_csv("./data_import_examples/FAS_pups.csv",
+    na = c("NA", "", ".")) |>
+  janitor::clean_names() |>
+  mutate(
+    sex = case_match(sex, 
+                     1 ~ "male", 
+                     2 ~ "female"),
+    sex = as.factor(sex)) 
+pup_df
+
+litter_df = 
+  read_csv("./data_import_examples/FAS_litters.csv", na = c("NA", ".", "")) |> 
+  janitor::clean_names() |>
+  separate(group, into = c("dose", "day_of_tx"), sep = 3) |>
+  relocate(litter_number) |>
+   mutate(
+    wt_gain = gd18_weight - gd0_weight,
+    dose = str_to_lower(dose))
+litter_df
+
+```
+join the two datasets
+```{r}
+fas_df = 
+  left_join(pup_df, litter_df, by = "litter_number")
+```
+
+Assessment 2:
+
+
+
 
 
